@@ -6,9 +6,7 @@ import {v4 as uuidv4} from 'uuid';
 
 function App() {
   const [todos,setTodos]=useState([]);
-
   const todoNameRef =useRef();
-
   const handleAddTodo =(e)=>{
     const name =todoNameRef.current.value;
     if(name === "")return;
@@ -32,11 +30,19 @@ const handleClear =()=>{
 
   return (
     <div className="App">
+    <div className='container'>
       <h1>Todoリスト</h1>
+      <div className='container-inner'>
       <input type="text" placeholder='タスクを入力' ref={todoNameRef}/>
-      <button onClick={handleAddTodo}>タスクを追加</button>
-      <button onClick={handleClear}>タスクを削除</button>
+             <button onClick={handleAddTodo}>タスクを追加</button>
+      <button onClick={handleClear}>タスクを削除</button> 
+
+
       <TodoList todos={todos} toggleTodo={toggleTodo}/>
+      </div>
+
+    </div>
+
     </div>
   );
 }
