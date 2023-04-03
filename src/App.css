@@ -1,0 +1,50 @@
+body{
+  background-color: rgb(60, 60, 60);
+  color: white;
+}
+.container{
+  max-width: 690px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+h1{
+  text-align: center;
+  color: skyblue;
+}
+
+.selectBox select{
+  margin-bottom: 10px;
+  height: 2em;
+}
+
+.taskinputBox{
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.task input{
+  max-width: 690px;
+}
+.task input{
+  max-width: 100%;
+  height: 2em;
+  margin-right: 5px;
+}
+.task button{
+  height: 2.5em;
+  margin-right: 5px;
+}
+
+.taskBox{
+  border-radius: 5px;
+  margin-top: 10px;
+}
+.taskBoxinner{
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 20px 5px;
+}
+.taskBoxinner>div{
+  line-height: 1.75;
+}

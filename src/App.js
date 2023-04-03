@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 function App() {
   const [todos, setTodos] = useState([]);
-  const [filteredTodos, setFilteredTodos] = useState([]);
-
+  const [filteredTodos, setFilteredTodos] = useState(todos);
+  const [filterType, setFilterType] = useState("all");
   const todoNameRef = useRef();
 
   const handleAddTodo = () => {
@@ -19,66 +19,83 @@ function App() {
     todoNameRef.current.value = null;
   };
 
-// ローカルストレージに保存
-useEffect(() => {
-  const savedTodos = JSON.parse(localStorage.getItem('todos'));
-  if (savedTodos) {
-    setTodos(savedTodos);
-  }
-}, []);
-useEffect(() => {
-  localStorage.setItem('todos', JSON.stringify(todos));
-}, [todos]);
 
-  // 完了未完了を入れ替えるtoggle
+  useEffect(() => {
+    localStorage.setItem('todos', JSON.stringify(todos));
+  }, [todos]);
+  useEffect(() => {
+    const savedTodos = JSON.parse(localStorage.getItem('todos'));
+    if (savedTodos) {
+      setTodos(savedTodos);
+    }
+  }, []);
+
+  // 完了未完了を入れ替えるtoggle関数
   const toggleTodo = (id) => {
     const newTodos = [...todos];
     const todo = newTodos.find((todo) => todo.id === id);
     todo.completed = !todo.completed;
     setTodos(newTodos);
-  }
+  };
   // 完了したタスクの削除ボタン
   const handleClear = () => {
     const newTodos = todos.filter((todo) => !todo.completed);
     setTodos(newTodos);
-    setFilteredTodos([]);
   };
 
-  //フィルター機能
-  // 完了を押したら完了のみ表示
-  const filterComp = () => {
-    const comptodos = todos.filter((todo) => todo.completed);
-    console.log(comptodos);
-  };
-  // 未完了を押したら未完了のみ表示
-  const filterYet = () => {
-    const yettodos = todos.filter((todo) => !todo.completed);
-    console.log(yettodos);
-    
-  };
 
-  // filteredTodosが更新された場合にuseEffectが発火し、TodoListに反映される
+  // selectboxの切り替え
   useEffect(() => {
-    setTodos(filteredTodos);
-  }, [filteredTodos]);
+    if (filterType === "all") {
+      setFilteredTodos(todos);
+    } else if (filterType === "checked") {
+      const completedTodos = todos.filter((todo) => todo.completed);
+      setFilteredTodos(completedTodos);
+    } else if (filterType === "unchecked") {
+      const uncompletedTodos = todos.filter((todo) => !todo.completed);
+      setFilteredTodos(uncompletedTodos);
+    } 
+  }, [todos, filterType]);
+
+  // セレクトボックスのonChange関数
+  const handleFilterChange = (e) => {
+    const selectedFilterType = e.target.value;
+    setFilterType(selectedFilterType);
+  };
 
   return (
     <div className="App">
       <div className='container'>
         <h1>Todoリスト</h1>
         <div className='container-inner'>
-          <input type="text" placeholder='タスクを入力' ref={todoNameRef} />
 
-          <button onClick={handleAddTodo}>タスクを追加</button>
+
+        <div className='taskinputBox'>
+          <label className='selectBox'>
+          <select defaultValue="all" onChange={handleFilterChange} >
+            <option value="all">全て</option>
+            <option value="checked">完了済</option>
+            <option value="unchecked">未完了</option>
+          </select>
+        </label>
+
+        <div className='task'>
+        <input type="text" placeholder='タスクを入力' ref={todoNameRef} />
+        <button onClick={handleAddTodo}>タスクを追加</button>
           <button onClick={handleClear}>タスクを削除</button>
-          <button onClick={filterComp}>完了</button>
-          <button onClick={filterYet}>未完了</button>
-          <TodoList todos={todos} toggleTodo={toggleTodo} />
+        </div>
+        </div>
+
+
+          <div className='taskBox'>
+          <h2>タスク</h2>
+          <div className='taskBoxinner'>
+          <TodoList todos={filteredTodos} toggleTodo={toggleTodo} />
+          </div>
+          </div>
         </div>
       </div>
-
     </div>
   );
 }
-
 export default App;
