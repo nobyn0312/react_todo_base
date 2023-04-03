@@ -20,16 +20,15 @@ function App() {
   };
 
 // ローカルストレージに保存
-  useEffect(() => {
-    const savedTodos = JSON.parse(localStorage.getItem('todos'));
-    if (savedTodos) {
-      setTodos(savedTodos);
-    }
-  }, []);
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }, [todos]);
-
+useEffect(() => {
+  const savedTodos = JSON.parse(localStorage.getItem('todos'));
+  if (savedTodos) {
+    setTodos(savedTodos);
+  }
+}, []);
+useEffect(() => {
+  localStorage.setItem('todos', JSON.stringify(todos));
+}, [todos]);
 
   // 完了未完了を入れ替えるtoggle
   const toggleTodo = (id) => {
@@ -44,17 +43,18 @@ function App() {
     setTodos(newTodos);
     setFilteredTodos([]);
   };
-  
+
   //フィルター機能
   // 完了を押したら完了のみ表示
   const filterComp = () => {
     const comptodos = todos.filter((todo) => todo.completed);
-    setFilteredTodos(comptodos);
+    console.log(comptodos);
   };
   // 未完了を押したら未完了のみ表示
   const filterYet = () => {
     const yettodos = todos.filter((todo) => !todo.completed);
-    setFilteredTodos(yettodos);
+    console.log(yettodos);
+    
   };
 
   // filteredTodosが更新された場合にuseEffectが発火し、TodoListに反映される
