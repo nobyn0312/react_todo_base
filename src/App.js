@@ -20,15 +20,15 @@ function App() {
   };
 
 
-  useEffect(() => {
-    localStorage.setItem('todos', JSON.stringify(todos));
-  }, [todos]);
-  useEffect(() => {
-    const savedTodos = JSON.parse(localStorage.getItem('todos'));
-    if (savedTodos) {
-      setTodos(savedTodos);
-    }
-  }, []);
+  // useEffect(() => {
+  //   localStorage.setItem('todos', JSON.stringify(todos));
+  // }, [todos]);
+  // useEffect(() => {
+  //   const savedTodos = JSON.parse(localStorage.getItem('todos'));
+  //   if (savedTodos) {
+  //     setTodos(savedTodos);
+  //   }
+  // }, []);
 
   // 完了未完了を入れ替えるtoggle関数
   const toggleTodo = (id) => {
@@ -44,6 +44,12 @@ function App() {
   };
 
 
+    // セレクトボックスのonChange関数
+    const handleFilterChange = (e) => {
+      const selectedFilterType = e.target.value;
+      setFilterType(selectedFilterType);
+    };
+  
   // selectboxの切り替え
   useEffect(() => {
     if (filterType === "all") {
@@ -56,12 +62,6 @@ function App() {
       setFilteredTodos(uncompletedTodos);
     } 
   }, [todos, filterType]);
-
-  // セレクトボックスのonChange関数
-  const handleFilterChange = (e) => {
-    const selectedFilterType = e.target.value;
-    setFilterType(selectedFilterType);
-  };
 
   return (
     <div className="App">
@@ -83,7 +83,10 @@ function App() {
         <input type="text" placeholder='タスクを入力' ref={todoNameRef} />
         <button onClick={handleAddTodo}>タスクを追加</button>
           <button onClick={handleClear}>タスクを削除</button>
+          <button onClick={handleAddTodo}>完了</button>
+          <button onClick={handleClear}>未完了</button>
         </div>
+        
         </div>
 
 
